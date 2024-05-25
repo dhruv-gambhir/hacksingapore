@@ -128,7 +128,7 @@ def need_help_update_data(username):
     connection.commit()
     connection.close()
 
-    return 'Data updated successfully'
+    return jsonify('Data updated successfully')
 
 #Delete data through usernamed
 @app.route('/delete_data/<username>', methods=['DELETE'])
@@ -141,7 +141,7 @@ def delete_task(username):
     connection.commit()
     connection.close()
 
-    return 'Data deleted successfully'
+    return jsonify('Data deleted successfully')
 
 #Delete task through username
 @app.route('/delete_task/<needy_username>', methods=['DELETE'])
@@ -154,7 +154,7 @@ def delete_data(needy_username):
     connection.commit()
     connection.close()
 
-    return 'Task deleted successfully'
+    return jsonify('Task deleted successfully')
 
 #Update task details
 @app.route('/update_task_details/<needy_username>', methods=['PUT'])
@@ -164,11 +164,11 @@ def update_task(needy_username):
     cursor = connection.cursor()
 
     update_data = "UPDATE task SET caption = ?, day = ?, range = ?, urgency = ?  WHERE needy_username = ?"
-    cursor.execute(update_data, (data[0], data[1], data[2], data[3], needy_username))
+    cursor.execute(update_data, (data["caption"], data["day"], data["range"], data["urgency"], needy_username))
     connection.commit()
     connection.close()
 
-    return 'Data updated successfully'
+    return jsonify('Data updated successfully')
 
 #Update task assignment
 @app.route('/update_task_assignment/<needy_username>', methods=['PUT'])
@@ -178,11 +178,11 @@ def update_assignedtask(needy_username):
     cursor = connection.cursor()
 
     update_data = "UPDATE task SET volunteer_username = ?, status = ?  WHERE needy_username = ?"
-    cursor.execute(update_data, (data[0], 1, needy_username))
+    cursor.execute(update_data, (data["caption"], 1, needy_username))
     connection.commit()
     connection.close()
 
-    return 'Task Assigned successfully'
+    return jsonify('Task Assigned successfully')
 
 #Get all task data to present
 @app.route('/get_taskdata/', methods=['GET'])
