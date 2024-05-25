@@ -4,25 +4,21 @@ import PlacesAutocomplete, {
     geocodeByAddress,
     getLatLng,
 } from 'react-places-autocomplete';
+import { useLocation } from 'react-router-dom';
 
 const SignUpForm = ({ formType }) => {
-    const [profilePhoto, setProfilePhoto] = useState(null);
     const [name, setName] = useState('');
     const [age, setAge] = useState('');
     const [contact, setContact] = useState('');
-    const [address, setAddress] = useState('');
+    const [location, setLocation] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [dob, setDob] = useState('');
     const navigate = useNavigate();
 
-    const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        setProfilePhoto(file);
-    };
 
     const handleSelect = async (value) => {
-        setAddress(value);
+        setLocation(value);
         try {
             const results = await geocodeByAddress(value);
             const latLng = await getLatLng(results[0]);
@@ -34,36 +30,55 @@ const SignUpForm = ({ formType }) => {
     };
 
     const handleSubmitButton = async () => {
-        // Prepare user data object
+        
         const userData = {
             username,
+            age,
             password,
             name,
             dob,
             contact,
-            address,
+            location,
         };
+    
+        console.log(userData);
 
+        const url = needHelp ? 'http://127.0.0.1:5000/need_help/add_data' : 'http://127.0.0.1:5000/give_help/add_data'
+        
         try {
-            // Call API to create user profile
-            console.log('User profile created successfully:');
-            // Navigate to the next page or handle success
-            navigate('/success');
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            });
+        
+            if (!response.ok) {
+                throw new Error(`Server error: ${response.status} ${response.statusText}`);
+            }
+        
+            const result = await response.json();
+            console.log('Success:', result);
         } catch (error) {
-            console.error('Failed to create user profile:', error);
-            // Handle error as needed (e.g., show an error message)
+            console.error('Error:', error);
         }
+        
+        navigate('/StartPage');
+        
     };
+
+
+    const location2 = useLocation();
+    const searchParams = new URLSearchParams(location2.search);
+    const needHelp = searchParams.get('needHelp') === 'true';
 
     return (
         <div className="container">
             <br />
             <h4>Sign Up</h4>
+            <p>Need Help: {needHelp ? 'Yes' : 'No'}</p>
             <form>
-                <div className="mb-3">
-                    <label htmlFor="profilePhoto" className="form-label">Profile Photo</label>
-                    <input type="file" className="form-control" id="profilePhoto" onChange={handleFileChange} accept="image/*" />
-                </div>
                 <div className="mb-3">
                     <label htmlFor="username" className="form-label">Username</label>
                     <input type="text" className="form-control" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
@@ -78,17 +93,21 @@ const SignUpForm = ({ formType }) => {
                 </div>
                 <div className="mb-3">
                     <label htmlFor="dob" className="form-label">Date of Birth</label>
-                    <input type="date" className="form-control" id="dob" value={dob} onChange={(e) => setDob(e.target.value)} />
+                    <input type="date" className="form-control" id="dob" value={dob} onChange={(e) => {
+                        setDob(e.target.value);
+                        setAge(new Date().getFullYear() - new Date(e.target.value).getFullYear());
+                    }
+                    } />
                 </div>
                 <div className="mb-3">
                     <label htmlFor="contact" className="form-label">Contact</label>
                     <input type="text" className="form-control" id="contact" value={contact} onChange={(e) => setContact(e.target.value)} />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="address" className="form-label">Address</label>
+                    <label htmlFor="location" className="form-label">Address</label>
                     <PlacesAutocomplete
-                        value={address}
-                        onChange={setAddress}
+                        value={location}
+                        onChange={setLocation}
                         onSelect={handleSelect}
                     >
                         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
