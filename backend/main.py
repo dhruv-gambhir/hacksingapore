@@ -6,6 +6,10 @@ app = Flask(__name__)
 def hello_world():
     return 'Hello, World!'
 
+@app.route('/about')
+def about():
+    return 'The about page'
+
 
 
 if __name__ == '__main__':
