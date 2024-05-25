@@ -8,28 +8,42 @@ app = Flask(__name__)
 def hello_world():
     return 'Hello, World!'
 
-#add data into a table from incoming json
-@app.route('/give_/help/add_data', methods=['POST'])
+#add data into a table for give help
+@app.route('/give_help/add_data', methods=['POST'])
 def give_help_add_data():
     data = request.get_json()
     connection = sqlite3.connect('data.db')
     cursor = connection.cursor()
 
-    insert_data = "INSERT INTO give_help VALUES (?, ?, ?, ?, ?, ?, ?)"
-    cursor.execute(insert_data, (data['fin'], data['name'], data['dob'], data['age'], data['location'], data['contact'], data['image']))
+    insert_data = "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    cursor.execute(insert_data, (data['username'], data['name'], data['dob'], data['age'], data['location'], data['contact'], data['image'], 0))
     connection.commit()
     connection.close()
 
     return 'Data added successfully'
 
-#retrieve data from a table for a specific fin
-@app.route('/give_help/get_data/<int:fin>', methods=['GET'])
-def give_help_get_data(fin):
+#add data into a table for need help
+@app.route('/need_help/add_data', methods=['POST'])
+def need_help_add_data():
+    data = request.get_json()
     connection = sqlite3.connect('data.db')
     cursor = connection.cursor()
 
-    select_data = "SELECT * FROM give_help WHERE fin = ?"
-    cursor.execute(select_data, (fin,))
+    insert_data = "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    cursor.execute(insert_data, (data['username'], data['name'], data['password'],data['dob'], data['age'], data['location'], data['contact'], data['image'],1))
+    connection.commit()
+    connection.close()
+
+    return 'Data added successfully'
+
+#Get data from table through username
+@app.route('/get_data/<username>', methods=['GET'])
+def give_help_get_data(username):
+    connection = sqlite3.connect('data.db')
+    cursor = connection.cursor()
+
+    select_data = "SELECT * FROM user WHERE username = ?"
+    cursor.execute(select_data, (username,))
     data = cursor.fetchone()
     connection.close()
 
@@ -37,127 +51,57 @@ def give_help_get_data(fin):
             return jsonify({'error': 'Data not found'}), 404
 
     return {
-        'fin': data[0],
+        'username': data[0],
         'name': data[1],
-        'dob': data[2],
-        'age': data[3],
-        'location': data[4],
-        'contact': data[5],
-        'image': data[6]
+        'password': data[2],
+        'dob': data[3],
+        'age': data[4],
+        'location': data[5],
+        'contact': data[6],
+        'image': data[7]
     }
 
-#update data in a table for a specific fin
-@app.route('/give_help/update_data/<int:fin>', methods=['PUT'])
-def give_help_update_data(fin):
-    data = request.get_json()
-    connection = sqlite3.connect('data.db')
-    cursor = connection.cursor()
-
-    update_data = "UPDATE give_help SET name = ?, dob = ?, age = ?, location = ?, contact = ?, image = ? WHERE fin = ?"
-    cursor.execute(update_data, (data['name'], data['dob'], data['age'], data['location'], data['contact'], data['image'], fin))
-    connection.commit()
-    connection.close()
-
-    return 'Data updated successfully'
-
-#delete data from a table for a specific fin
-@app.route('/give_help/delete_data/<int:fin>', methods=['DELETE'])
-def need_help_delete_data(fin):
-    connection = sqlite3.connect('data.db')
-    cursor = connection.cursor()
-
-    delete_data = "DELETE FROM give_help WHERE fin = ?"
-    cursor.execute(delete_data, (fin,))
-    connection.commit()
-    connection.close()
-
-    return 'Data deleted successfully'
-
-
-#do same for need_help table
-@app.route('/need_help/add_data', methods=['POST'])
-def need_help_add_data():
-    data = request.get_json()
-    connection = sqlite3.connect('data.db')
-    cursor = connection.cursor()
-
-    insert_data = "INSERT INTO need_help VALUES (?, ?, ?, ?, ?, ?, ?)"
-    cursor.execute(insert_data, (data['fin'], data['name'], data['dob'], data['age'], data['location'], data['contact'], data['image']))
-    connection.commit()
-    connection.close()
-
-    return 'Data added successfully'
-
+#Get all need help data
 @app.route('/need_help/get_data/', methods=['GET'])
 def need_help_get_all_data():
     connection = sqlite3.connect('data.db')
     cursor = connection.cursor()
 
-    select_data = "SELECT * FROM need_help"
+    select_data = "SELECT * FROM user WHERE need_help = 1"
     cursor.execute(select_data)
     data = cursor.fetchall()
     connection.close()
 
     return {
         'data': data
-    }
+    }   
 
-@app.route('/need_help/get_data/<int:fin>', methods=['GET'])
-def need_help_get_data(fin):
-
-    try:
-        connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
-
-        select_data = "SELECT * FROM need_help WHERE fin = ?"
-        cursor.execute(select_data, (fin,))
-        data = cursor.fetchone()
-        connection.close()
-
-        return {
-            'fin': data[0],
-            'name': data[1],
-            'dob': data[2],
-            'age': data[3],
-            'location': data[4],
-            'contact': data[5],
-            'image': data[6]
-        }
-    except:
-        return jsonify({'message': 'Data not found'}), 404
-    
-    
-
-@app.route('/need_help/update_data/<int:fin>', methods=['PUT'])
-def need_help_update_data(fin):
+#Update data using username
+@app.route('/update_data/<username>', methods=['PUT'])
+def need_help_update_data(username):
     data = request.get_json()
     connection = sqlite3.connect('data.db')
     cursor = connection.cursor()
 
-    update_data = "UPDATE need_help SET name = ?, dob = ?, age = ?, location = ?, contact = ?, image = ? WHERE fin = ?"
-    cursor.execute(update_data, (data['name'], data['dob'], data['age'], data['location'], data['contact'], data['image'], fin))
+    update_data = "UPDATE user SET name = ?, password = ?, dob = ?, age = ?, location = ?, contact = ?, image = ? WHERE username = ?"
+    cursor.execute(update_data, (data['name'], data['dob'], data['password'], data['age'], data['location'], data['contact'], data['image'], username))
     connection.commit()
     connection.close()
 
     return 'Data updated successfully'
 
-@app.route('/need_help/delete_data/<int:fin>', methods=['DELETE'])
-def delete_data(fin):
+#Delete data through usernamed
+@app.route('/delete_data/<username>', methods=['DELETE'])
+def delete_data(username):
     connection = sqlite3.connect('data.db')
     cursor = connection.cursor()
 
-    delete_data = "DELETE FROM need_help WHERE fin = ?"
-    cursor.execute(delete_data, (fin,))
+    delete_data = "DELETE FROM user WHERE username = ?"
+    cursor.execute(delete_data, (username,))
     connection.commit()
     connection.close()
 
     return 'Data deleted successfully'
-
-
-
-
-
-
 
 
 if __name__ == '__main__':
