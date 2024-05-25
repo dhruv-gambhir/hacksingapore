@@ -1,14 +1,18 @@
 import './App.css';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SignUpForm from './SignUpForm';
 
 function SignUp() {
-
+    const [needHelp, setNeedHelp] = useState(false);
     const navigate = useNavigate();
 
-    const handleClick = () => {
-        navigate('/SignUpForm');
+    const handleClickNeedHelp = () => {
+        navigate('/SignUpForm?needHelp=true'); 
+        setNeedHelp(true);
+    };
+
+    const handleClickWantToHelp = () => {
+        navigate('/SignUpForm?needHelp=false');
     };
 
     return (
@@ -21,7 +25,7 @@ function SignUp() {
                     <button
                         type="button"
                         className="btn btn-light mt-3"
-                        onClick={handleClick}
+                        onClick={handleClickNeedHelp} 
                     >
                         I need help!
                     </button>
@@ -33,7 +37,7 @@ function SignUp() {
                     <button
                         type="button"
                         className="btn btn-light mt-3"
-                        onClick={handleClick}
+                        onClick={handleClickWantToHelp}
                     >
                         I want to help!
                     </button>

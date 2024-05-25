@@ -1,12 +1,15 @@
 from flask import Flask, request
 import sqlite3
 from flask import jsonify
+from flask_cors import CORS
+
 
 app = Flask(__name__)
+CORS(app)
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def hello_world():
-    return 'Hello, World!'
+    return jsonify('Hello, World!')
 
 #add data into a table for give help
 @app.route('/give_help/add_data', methods=['POST'])
@@ -15,8 +18,8 @@ def give_help_add_data():
     connection = sqlite3.connect('data.db')
     cursor = connection.cursor()
 
-    insert_data = "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
-    cursor.execute(insert_data, (data['username'], data['name'], data['dob'], data['age'], data['location'], data['contact'], data['image'], 0))
+    insert_data = "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+    cursor.execute(insert_data, (data['username'], data['password'], data['name'], data['dob'], data['age'], data['location'], data['contact'], 0))
     connection.commit()
     connection.close()
 
@@ -29,8 +32,8 @@ def need_help_add_data():
     connection = sqlite3.connect('data.db')
     cursor = connection.cursor()
 
-    insert_data = "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
-    cursor.execute(insert_data, (data['username'], data['name'], data['password'],data['dob'], data['age'], data['location'], data['contact'], data['image'],1))
+    insert_data = "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+    cursor.execute(insert_data, (data['username'], data['name'], data['password'],data['dob'], data['age'], data['location'], data['contact'],1))
     connection.commit()
     connection.close()
 
@@ -83,8 +86,8 @@ def need_help_update_data(username):
     connection = sqlite3.connect('data.db')
     cursor = connection.cursor()
 
-    update_data = "UPDATE user SET name = ?, password = ?, dob = ?, age = ?, location = ?, contact = ?, image = ? WHERE username = ?"
-    cursor.execute(update_data, (data['name'], data['dob'], data['password'], data['age'], data['location'], data['contact'], data['image'], username))
+    update_data = "UPDATE user SET name = ?, password = ?, dob = ?, age = ?, location = ?, contact = ? WHERE username = ?"
+    cursor.execute(update_data, (data['name'], data['dob'], data['password'], data['age'], data['location'], data['contact'], username))
     connection.commit()
     connection.close()
 
@@ -103,6 +106,12 @@ def delete_data(username):
 
     return 'Data deleted successfully'
 
+@app.route('/say_hello', methods=['GET'])
+def say_hello():
+    return {
+        'message': 'Hello, World!'
+    }
+
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
