@@ -7,7 +7,7 @@ function StartPage() {
   const [showSignIn, setShowSignIn] = useState(false);
 
   const handleSignUpClick = () => {
-    console.log('Sign Up button pressed');
+    navigate('/SignUp');
   };
 
   const handleSignInClick = () => {
