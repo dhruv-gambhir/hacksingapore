@@ -43,9 +43,10 @@ const SignUpForm = ({ formType }) => {
     
         console.log(userData);
 
+        const url = needHelp ? 'http://127.0.0.1:5000/need_help/add_data' : 'http://127.0.0.1:5000/give_help/add_data'
         
         try {
-            const response = await fetch('http://127.0.0.1:5000/give_help/add_data', {
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -63,6 +64,7 @@ const SignUpForm = ({ formType }) => {
             console.error('Error:', error);
         }
         
+        navigate('/SignIn');
         
     };
 

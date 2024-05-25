@@ -2,10 +2,17 @@ from flask import Flask, request
 import sqlite3
 from flask import jsonify
 from flask_cors import CORS
+#random token for session
+import random
+import bcrypt
 
 
 app = Flask(__name__)
 CORS(app)
+
+def generateSessionToken(username):
+    return username + '-' + str(random.randint(0, 1000000))
+
 
 @app.route('/', methods=['GET'])
 def hello_world():
@@ -23,7 +30,7 @@ def give_help_add_data():
     connection.commit()
     connection.close()
 
-    return 'Data added successfully'
+    return jsonify('Data added successfully')
 
 #add data into a table for need help
 @app.route('/need_help/add_data', methods=['POST'])
@@ -37,7 +44,36 @@ def need_help_add_data():
     connection.commit()
     connection.close()
 
-    return 'Data added successfully'
+    return jsonify('Data added successfully')
+
+
+
+@app.route('/signin', methods=['POST'])
+def signin():
+    data = request.get_json()
+    if 'username' not in data or 'password' not in data:
+        return jsonify({'error': 'Username and password are required fields'}), 400
+    
+    connection = sqlite3.connect('data.db')
+    cursor = connection.cursor()
+
+    select_data = "SELECT * FROM user WHERE username = ? AND password = ?"
+    cursor.execute(select_data, (data['username'], data['password']))
+
+    user = cursor.fetchone()
+    connection.close()
+
+    if user is None:
+        return jsonify("username or password is incorrect")
+    
+    # Assuming your user table structure is (username, ...)
+    return jsonify({
+        'username': user[0],
+        'need_help': user[7],
+        'session_token': generateSessionToken(user[0])
+    })
+
+
 
 #Get data from table through username
 @app.route('/get_data/<username>', methods=['GET'])
@@ -63,6 +99,7 @@ def give_help_get_data(username):
         'contact': data[6],
         'image': data[7]
     }
+
 
 #Get all need help data
 @app.route('/need_help/get_data/', methods=['GET'])
