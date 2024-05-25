@@ -64,7 +64,7 @@ const SignUpForm = ({ formType }) => {
             console.error('Error:', error);
         }
         
-        navigate('/SignIn');
+        navigate('/StartPage');
         
     };
 
