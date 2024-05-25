@@ -8,21 +8,22 @@ connection = sqlite3.connect('data.db')
 cursor = connection.cursor()
 
 # Create a table
-create_table_give_hep = "CREATE TABLE give_help (fin int, name text ,dob date, age int, location int, contact text, image text)"
-cursor.execute(create_table_give_hep)
+create_table_user = "CREATE TABLE user (username text , name text , password text, dob text, age int, location text, contact text, need_help int)"
+cursor.execute(create_table_user)
 
 # Insert data into the table
-insert_data = "INSERT INTO give_help VALUES (?,?,?,?,?,?,?)"
-cursor.execute(insert_data, (1234, 'John Doe', '1990-01-01', 30, 123, '123-456-7890', 'image.jpg'))
-
-create_table_need_help = "CREATE TABLE need_help (fin int, name text ,dob date, age int, location int, contact text, image text)"
-cursor.execute(create_table_need_help)
-
+insert_data = "INSERT INTO user VALUES (?,?,?,?,?,?,?,?)"
+cursor.execute(insert_data, ('johndoe', 'John Doe', 'okfeokeows', '1990-01-01', 30, '30 nanyang cres', '123-456-7890',1))
 # Insert data into the table
-insert_data = "INSERT INTO need_help VALUES (?,?,?,?,?,?,?)"
-cursor.execute(insert_data, (4321, 'Jane Doe', '1995-01-01', 25, 321, '321-654-9870', 'image.jpg'))
+insert_data = "INSERT INTO user VALUES (?,?,?,?,?,?,?,?)"
+cursor.execute(insert_data, ('janedoe', 'jane', 'ghjdsjfsdjfs',  '1995-01-01', 25, '1 fusionopolis', '321-654-9870',0))
+insert_data = "INSERT INTO user VALUES (?,?,?,?,?,?,?,?)"
+cursor.execute(insert_data, ('dhruvgambhir', 'dhruv gamhir', 'kdjewjdwew', '2003-08-07', 25, 'no way home', '451-667-3450',1))
+insert_data = "INSERT INTO user VALUES (?,?,?,?,?,?,?,?)"
+cursor.execute(insert_data, ('kakulymittal', 'lokj','okdocsdlw','1995-01-01', 25, 'chalo ghar chale', '321-654-9870',0))
 
-    
+print(connection.execute("SELECT * FROM user").fetchall())
+
 # Commit the changes
 connection.commit()
 
