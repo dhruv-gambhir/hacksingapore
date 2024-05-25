@@ -206,11 +206,11 @@ def task_add_data():
     connection = sqlite3.connect('data.db')
     cursor = connection.cursor()
     insert_data = "INSERT INTO task VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-    cursor.execute(insert_data, (data[0], data[1], data[2], data[3], data[4], data[5], "None", 0))
+    cursor.execute(insert_data, (data["caption"], data["day"], data["range"], data["urgency"], data["list"], data["needy_username"], "None", 0))
     connection.commit()
     connection.close()
 
-    return "Data added successfully"
+    return jsonify("Data added successfully")
 
 
 if __name__ == '__main__':

@@ -20,10 +20,19 @@ function Needy_Home() {
       setShowModal(false);
     };
   
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = async (e) => {
       e.preventDefault();
       if (title.trim()) {
-        const newPost = { title, day, time, urgency, todos };
+        const username = sessionStorage.getItem('username'); // Retrieve username from session storage
+        const listAsString = todos.join(',');
+        const newPost = {
+          caption: title,
+          day,
+          range: time,
+          urgency,
+          list: listAsString,
+          needy_username: username, // Use the retrieved username
+        };
         setPosts([...posts, newPost]);
         setTitle('');
         setDay('today');
@@ -31,6 +40,27 @@ function Needy_Home() {
         setUrgency('none');
         setTodos([]);
         setShowModal(false);
+
+        console.log('New post:', newPost);
+    
+        try {
+          const response = await fetch('http://127.0.0.1:5000/add_task/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newPost),
+          });
+    
+          if (!response.ok) {
+            throw new Error(`Server error: ${response.status} ${response.statusText}`);
+          }
+    
+          const result = await response.json();
+          console.log('Task added successfully:', result);
+        } catch (error) {
+          console.error('Error adding task:', error);
+        }
       }
     };
 
@@ -158,7 +188,7 @@ function Needy_Home() {
                   <p className="card-text">Time: {post.time}</p>
                   <p className="card-text">Urgency: {post.urgency}</p>
                   <ul className="list-group list-group-flush">
-                    {post.todos.map((todo, idx) => (
+                    {post.todos && post.todos.map((todo, idx) => (
                       <li key={idx} className="list-group-item">{todo}</li>
                     ))}
                   </ul>
