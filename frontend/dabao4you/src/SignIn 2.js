@@ -2,14 +2,10 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { Link, json } from 'react-router-dom';
-import { useNavigate  } from 'react-router-dom';
 
 const SignIn = ({ show, handleClose }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [token, setToken] = useState('');
-  const [userType, setUserType] = useState('');
-  const navigate = useNavigate();
 
 
   const handleSubmit = async (e) => {
@@ -19,6 +15,8 @@ const SignIn = ({ show, handleClose }) => {
     handleClose();
   };
 
+  
+  
   const handleSignInButton = async () => {
     // Handle sign in button logic here
     const userData = {
@@ -45,19 +43,6 @@ const SignIn = ({ show, handleClose }) => {
   
       const result = await response.json();
       console.log('Success:', result);
-
-      sessionStorage.setItem('session_token', result.session_token);
-      sessionStorage.setItem('username', result.username);
-      sessionStorage.setItem('need_help', result.need_help);
-
-      setToken(result.session_token);
-      setUserType(result.need_help);
-
-      if (result.need_help) {
-        navigate('/Home')
-      }
-
-
   } catch (error) {
       console.error('Error:', error);
   }
