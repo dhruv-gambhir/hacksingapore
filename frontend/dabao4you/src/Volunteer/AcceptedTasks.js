@@ -16,7 +16,7 @@ const AcceptedTasks = () => {
             { isPending && <div>Loading...</div> }
             { tasks && 
             <div className="container">
-                <h1 className='container'>Your Accepted Tasks!</h1>
+                <h1 className='container h1 text-white mt-3'>Your Accepted Tasks!</h1>
                 {tasks.map((task) => (
                     <div className="container mt-2 mb-3">
                         <div className="card border">

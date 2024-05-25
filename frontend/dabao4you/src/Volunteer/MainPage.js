@@ -15,7 +15,7 @@ const MainPage = () => {
             { isPending && <div>Loading...</div> }
             { tasks && 
             <div className="container">
-                <h1 className='container'>Dabao4You</h1>
+                <h1 className='container h1 text-white mt-3'>Dabao4You</h1>
                 {tasks.map((task) => (
                     <div className="container mt-2 mb-3">
                         <div className="card border">

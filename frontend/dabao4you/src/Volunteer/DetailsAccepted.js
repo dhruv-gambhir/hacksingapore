@@ -30,7 +30,7 @@ const DetailsAccepted = () => {
             { isPending && <div>Loading...</div> }
             { task && 
             <div className = "align-items-center justify-content-center">
-                <div className='h1'>Dabao4You</div>
+                <div className='h1 text-white mt-3'>Dabao4You</div>
                 <div className="container mt-4 mb-3">
                     <div className="card border">
                         <div className="card-body text-start py-4">
