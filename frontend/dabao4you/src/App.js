@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignUp from './SignUp';
 import StartPage from './StartPage';
+import SignIn from './SignIn';
+import SignUpForm from './SignUpForm';
 import Needy_Home from './need_help/MainPage';
 //import Needy_Profile from 'need_help/Profile';
 import Needy_Chat from './need_help/Chat';
@@ -18,7 +20,10 @@ function App() {
     <Router>
       <Routes>
         <Route path={'/'} element={<StartPage/>}/>
+        <Route path={'/StartPage'} element={<StartPage/>}/>
         <Route path={'/SignUp'} element={<SignUp/>}/>
+        <Route path={'/SignIn'} element={<SignIn/>}/>
+        <Route path={'/SignUpForm'} element={<SignUpForm/>}/>
         <Route path={'/Home'} element={<Needy_Home/>}/>
         <Route path={'/Chat'} element={<Needy_Chat/>}/>
       </Routes>
