@@ -25,19 +25,19 @@ insert_data_t = "INSERT INTO task VALUES (?,?,?,?,?,?,?,?)"
 cursor.execute(insert_data_t,("I want groceries", "Tomorrow", "9-12pm","Very Urgent", '{"0":"Milk","1":"Oranges"}', "johndoe","janedoe", 0 ))
 
 # Create a table
-create_table_user = "CREATE TABLE IF NOT EXISTS user (username text , name text , password text, dob date, age int, location int, contact text, image text, need_help int)"
+create_table_user = "CREATE TABLE user (username text , name text , password text, dob date, age int, location int, contact text, image text, need_help int)"
 cursor.execute(create_table_user)
 
 # Insert data into the table
 insert_data = "INSERT INTO user VALUES (?,?,?,?,?,?,?,?,?)"
-cursor.execute(insert_data, ('johndoe', 'John Doe', 'okfeokeows', '1990-01-01', 30, "Nanyang Grove", '123-456-7890', 'image.jpg',1))
-# # Insert data into the table
+cursor.execute(insert_data, ('johndoe', 'John Doe', 'okfeokeows', '1990-01-01', 30, 123, '123-456-7890', 'image.jpg',1))
+# Insert data into the table
 insert_data = "INSERT INTO user VALUES (?,?,?,?,?,?,?,?,?)"
-cursor.execute(insert_data, ('janedoe', 'jane', 'ghjdsjfsdjfs',  '1995-01-01', 25, "Nanyang Crescent", '321-654-9870', 'image.jpg',0))
+cursor.execute(insert_data, ('janedoe', 'jane', 'ghjdsjfsdjfs',  '1995-01-01', 25, 321, '321-654-9870', 'image.jpg',0))
 insert_data = "INSERT INTO user VALUES (?,?,?,?,?,?,?,?,?)"
-cursor.execute(insert_data, ('dhruvgambhir', 'dhruv gamhir', 'kdjewjdwew', '2003-08-07', 25, "Tuas Road", '451-667-3450', 'image.jpg',1))
+cursor.execute(insert_data, ('dhruvgambhir', 'dhruv gamhir', 'kdjewjdwew', '2003-08-07', 25, 321, '451-667-3450', 'image.jpg',1))
 insert_data = "INSERT INTO user VALUES (?,?,?,?,?,?,?,?,?)"
-cursor.execute(insert_data, ('kakulymittal', 'lokj','okdocsdlw','1995-01-01', 25, "Tuas Crescent", '321-654-9870', 'image.jpg',0))
+cursor.execute(insert_data, ('kakulymittal', 'lokj','okdocsdlw','1995-01-01', 25, 321, '321-654-9870', 'image.jpg',0))
 
 
 # Commit the changes
