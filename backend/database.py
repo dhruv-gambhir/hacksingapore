@@ -10,7 +10,6 @@ cursor = connection.cursor()
 
 create_table_tasks = """
 CREATE TABLE IF NOT EXISTS task (
-    id INTEGER PRIMARY KEY AUTOINCREMENT
     caption TEXT,
     day TEXT,
     range TEXT,
@@ -23,8 +22,7 @@ CREATE TABLE IF NOT EXISTS task (
 """
 cursor.execute(create_table_tasks)
 insert_data_t = "INSERT INTO task VALUES (?,?,?,?,?,?,?,?)"
-cursor.execute(insert_data_t,("I want groceries", "Tomorrow", "9-12pm","Very Urgent", '{"0":"Milk","1":"Oranges"}', "johndoe","janedoe", 1 ))
-
+cursor.execute(insert_data_t,("I want groceries", "Tomorrow", "9-12pm","Very Urgent", '{"0":"Milk","1":"Oranges"}', "johndoe","janedoe", 0 ))
 
 # Create a table
 create_table_user = "CREATE TABLE IF NOT EXISTS user (username text , name text , password text, dob date, age int, location int, contact text, image text, need_help int)"

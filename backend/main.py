@@ -1,5 +1,6 @@
 from flask import Flask, request
 import sqlite3
+import json
 from flask import jsonify
 app = Flask(__name__)
 
@@ -115,7 +116,7 @@ def delete_data(needy_username):
 
     return 'Task deleted successfully'
 
-#Update data using username
+#Update task details
 @app.route('/update_task_details/<needy_username>', methods=['PUT'])
 def update_task(needy_username):
     data = request.get_json()
@@ -123,31 +124,33 @@ def update_task(needy_username):
     cursor = connection.cursor()
 
     update_data = "UPDATE task SET caption = ?, day = ?, range = ?, urgency = ?  WHERE needy_username = ?"
-    cursor.execute(update_data, (data['caption'], data['day'], data['range'], data['urgency'], data['location'], data['contact'], data['image'], needy_username))
+    cursor.execute(update_data, (data[0], data[1], data[2], data[3], needy_username))
     connection.commit()
     connection.close()
 
     return 'Data updated successfully'
 
+#Update task assignment
 @app.route('/update_task_assignment/<needy_username>', methods=['PUT'])
 def update_assignedtask(needy_username):
     data = request.get_json()
     connection = sqlite3.connect('data.db')
     cursor = connection.cursor()
 
-    update_data = "UPDATE task SET volunteer_username = ?, assigned = ?  WHERE needy_username = ?"
-    cursor.execute(update_data, (data['volunteer_username'], 1, needy_username))
+    update_data = "UPDATE task SET volunteer_username = ?, status = ?  WHERE needy_username = ?"
+    cursor.execute(update_data, (data[0], 1, needy_username))
     connection.commit()
     connection.close()
 
     return 'Task Assigned successfully'
 
+#Get all task data to present
 @app.route('/get_taskdata/', methods=['GET'])
 def get_task_data():
     connection = sqlite3.connect('data.db')
     cursor = connection.cursor()
 
-    select_data = "SELECT task.caption, task.day, task.range, task.urgency, task.list, user.username, user.location FROM task JOIN user ON task.needy_username = user.username WHERE task.assigned = 0"
+    select_data = "SELECT task.caption, task.day, task.range, task.urgency, task.list, user.username, user.location FROM task JOIN user ON task.needy_username = user.username WHERE task.status = 1"
     cursor.execute(select_data)
     data = cursor.fetchall()
     connection.close()
@@ -156,16 +159,19 @@ def get_task_data():
         'data': data
     }  
 
+#Add task
 @app.route('/add_task/', methods=['POST'])
 def task_add_data():
     data = request.get_json()
     connection = sqlite3.connect('data.db')
     cursor = connection.cursor()
-
     insert_data = "INSERT INTO task VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-    cursor.execute(insert_data, (data['caption'], data['day'], data['range'], data['urgency'], data['list'],data['needy_username'], " ", 0))
+    cursor.execute(insert_data, (data[0], data[1], data[2], data[3], data[4], data[5], "None", 0))
     connection.commit()
     connection.close()
+
+    return "Data added successfully"
+
 
 if __name__ == '__main__':
     app.run()
