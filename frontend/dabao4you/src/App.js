@@ -1,7 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import SignUp from './Signup';
+import SignUp from './SignUp';
 import StartPage from './StartPage';
 
 function App() {
