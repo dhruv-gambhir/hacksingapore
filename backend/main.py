@@ -190,14 +190,12 @@ def get_task_data():
     connection = sqlite3.connect('data.db')
     cursor = connection.cursor()
 
-    select_data = "SELECT task.caption, task.day, task.range, task.urgency, task.list, user.username, user.location FROM task JOIN user ON task.needy_username = user.username WHERE task.status = 1"
+    select_data = "SELECT task.caption, task.day, task.range, task.urgency, task.list, user.username, user.location FROM task JOIN user ON task.needy_username = user.username WHERE task.status = 0"
     cursor.execute(select_data)
     data = cursor.fetchall()
     connection.close()
 
-    return {
-        'data': data
-    }  
+    return jsonify(data)
 
 #Add task
 @app.route('/add_task/', methods=['POST'])

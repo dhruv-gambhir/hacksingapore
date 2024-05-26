@@ -7,7 +7,7 @@ import { GeoAlt } from "react-bootstrap-icons";
 import { CheckCircle } from "react-bootstrap-icons";
 
 const MainPage = () => {
-    const { data: tasks, isPending, error} = useFetch('http://localhost:8000/tasks')
+    const { data: tasks, isPending, error} = useFetch('http://127.0.0.1:5000/get_taskdata/')
 
     return(
         <div className="container-fluid text-center bg-custom-purple min-vh-100">
@@ -16,8 +16,8 @@ const MainPage = () => {
             { tasks && 
             <div className="container">
                 <h1 className='container h1 text-white mt-3'>Dabao4You</h1>
-                {tasks.map((task) => (
-                    <div className="container mt-2 mb-3">
+                {tasks.map((task, index) => (
+                    <div key={index} className="container mt-2 mb-3">
                         <div className="card border">
                             <div className="card-body text-start py-4">
                                 <div className='row'>
