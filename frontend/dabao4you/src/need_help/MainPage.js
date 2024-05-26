@@ -1,6 +1,7 @@
 import '../App.css';
 import React, { useState } from 'react';
-import NeedyNavbar from './NeedyNavbar'
+import NeedyNavbar from './NeedyNavbar';
+import Navbar_1 from '../Navbar';
 
 function Needy_Home() {
     const [showModal, setShowModal] = useState(false);
@@ -90,7 +91,7 @@ function Needy_Home() {
         >
           +
         </button>
-        <NeedyNavbar />
+        
   
         {showModal && (
           <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
@@ -204,6 +205,9 @@ function Needy_Home() {
             </div>
           ))}
         </div>
+        <div>
+          <Navbar_1/>
+        </div> 
       </div>
     );
   }

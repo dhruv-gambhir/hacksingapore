@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import useFetch from './useFetch';
 import { GeoAlt } from "react-bootstrap-icons";
 import { CheckCircle } from "react-bootstrap-icons";
+import Navbar_1 from '../Navbar';
 
 const MainPage = () => {
     const { data: tasks, isPending, error} = useFetch('http://127.0.0.1:5000/get_taskdata/')
@@ -48,9 +49,11 @@ const MainPage = () => {
                             <Link to = {`/TaskDetails/${task.id}`} className="mx-auto mb-4 btn btn-outline-success justify-content-center w-75">Check Details</Link>
                         </div>
                     </div>
-                ) )}          
+                ) )}
+                <div>
+                    <Navbar_1/>
+                </div>        
             </div>
-
             }
 
         </div>

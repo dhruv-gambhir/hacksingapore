@@ -48,6 +48,7 @@ const AcceptedTasks = () => {
                             </div>
                             <Link to = {`/DetailsAccepted/${task.username}`} className="mx-auto mb-4 btn btn-outline-success justify-content-center w-75">Check Details</Link>
                         </div>
+                        
                     </div>
                 ) )}          
             </div>
