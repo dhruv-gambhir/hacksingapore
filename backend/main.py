@@ -96,8 +96,7 @@ def give_help_get_data(username):
         'dob': data[3],
         'age': data[4],
         'location': data[5],
-        'contact': data[6],
-        'image': data[7]
+        'contact': data[6]
     }
 
 
@@ -190,14 +189,38 @@ def get_task_data():
     connection = sqlite3.connect('data.db')
     cursor = connection.cursor()
 
-    select_data = "SELECT task.caption, task.day, task.range, task.urgency, task.list, user.username, user.location FROM task JOIN user ON task.needy_username = user.username WHERE task.status = 1"
+    select_data = "SELECT task.caption, task.day, task.range, task.urgency, task.list, user.username, user.location FROM task JOIN user ON task.needy_username = user.username WHERE task.status = 0"
     cursor.execute(select_data)
     data = cursor.fetchall()
+    print(data)
     connection.close()
 
+    return jsonify(data)
+
+#Get data from task table through username
+@app.route('/get_task_data/<username>', methods=['GET'])
+def give_task_get_data(username):
+    connection = sqlite3.connect('data.db')
+    cursor = connection.cursor()
+
+    select_data = "SELECT * FROM task WHERE username = ?"
+    cursor.execute(select_data, (username,))
+    data = cursor.fetchone()
+    connection.close()
+
+    if data is None:
+            return jsonify({'error': 'Data not found'}), 404
+
     return {
-        'data': data
-    }  
+        'caption': data[0],
+        'day': data[1],
+        'range': data[2],
+        'urgency': data[3],
+        'list': data[4],
+        'needy_username': data[5],
+        'volunteer_username': data[6],
+        'status': data[7]
+    }
 
 #Add task
 @app.route('/add_task/', methods=['POST'])
@@ -211,6 +234,7 @@ def task_add_data():
     connection.close()
 
     return jsonify("Data added successfully")
+
 
 
 if __name__ == '__main__':

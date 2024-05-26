@@ -10,13 +10,13 @@ const TaskDetails = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const [task_title, setTaskTitle] = useState('');
-    const { data: task, isPending, error} = useFetch('http://localhost:8000/tasks/'+id)
+    const { data: task, isPending, error} = useFetch('http://127.0.0.1:5000/get_task_data/'+id)
     const handleAccept = (e) => {
         setTaskTitle(task.title)
         e.preventDefault();
         const task_1= {};
         console.log(task);
-        fetch('http://localhost:8000/tasks/'+id, {
+        fetch('ttp://127.0.0.1:5000/update_task_assignment/'+id, {
           method: 'PUT',
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(task_1)

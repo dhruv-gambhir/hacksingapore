@@ -26,7 +26,7 @@ function App() {
         <Route path={'/'} element={<StartPage/>}/>
         <Route path={'/StartPage'} element={<StartPage/>}/>
         <Route path={'/SignUp'} element={<SignUp/>}/>
-        <Route path={'/MainPage'} element={<MainPage/>}/>
+        <Route path={'/Volunteer/Home'} element={<MainPage/>}/>
         <Route path={'/DetailsAccepted/:id'} element={<DetailsAccepted/>}/>
         <Route path={'/TaskDetails/:id'} element={<TaskDetails/>}/>
         <Route path={'/AcceptedTasks'} element={<AcceptedTasks/>}/>
@@ -34,7 +34,6 @@ function App() {
         <Route path={'/SignUpForm'} element={<SignUpForm/>}/>
         <Route path={'/Home'} element={<Needy_Home/>}/>
         <Route path={'/Chat'} element={<Needy_Chat/>}/>
-        {/*<Route path={'Volunteer/Home'} element={<Volunteer_Home/>}/>*/}
       </Routes>
     </Router>
   );
