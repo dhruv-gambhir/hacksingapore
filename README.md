@@ -20,7 +20,5 @@ For this, we present Dabao4you! Dabao4you is a progressive web app gives the eld
 * Front-End Development: React JS, Bootstrap
 * Back-End Development: Flask, SQLLite
 
-<br>
-## How to Run 
 
 
